@@ -1,17 +1,29 @@
-import { View } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Home from "./screens/Home";
+import Restaurant from "./screens/Restaurant";
+import { Provider } from "react-redux";
+import configureStore from "./redux";
 
-// const nav = createStackNavigator(
-//   {
-//     Home,
-//   },
-//   { initialRouteName: "Home" }
-// );
+const Navigation = createStackNavigator(
+  {
+    Home,
+    Restaurant,
+  },
+  {
+    initialRouteName: "Home",
+    headerMode: "none",
+  }
+);
 
-// export default createAppContainer(nav);
+const App = createAppContainer(Navigation);
 
-export default function () {
-  return <Home />;
-}
+const store = configureStore();
+
+export default () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};

@@ -7,8 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-export default function () {
-  const [activeTab, setActiveTab] = useState("Delivery");
+export default function ({activeTab, setActiveTab}) {
 
   return (
     <View

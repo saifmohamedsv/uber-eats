@@ -3,11 +3,15 @@ import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, AntDesign } from "react-native-vector-icons";
 
-const SearchBar = () => {
+const SearchBar = ({ onSubmit }) => {
   return (
     <View style={{ marginTop: 15, flexDirection: "row" }}>
       <GooglePlacesAutocomplete
+        query={{ key: "AIzaSyBTgKas46Hnbj-hvCCVTU_PrdHxJ0Lyc7Q" }}
         placeholder="Search"
+        onPress={({ description }) => {
+          onSubmit(description.split(",")[0]);
+        }}
         styles={{
           textInput: {
             backgroundColor: "#eee",
