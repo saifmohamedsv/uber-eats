@@ -18,15 +18,15 @@ const cartReducer = (state = cartInitialState, action) => {
         };
       } else {
         const filteredCart = newState.selectedItems.cartItems.filter(
-          (item) => item.name !== action.payload.name
+          (item) => item.title !== action.payload.title
         );
         newState.selectedItems = {
           ...newState.selectedItems,
+          checkBoxValue: action.payload.checkBoxValue,
           cartItems: filteredCart,
         };
       }
 
-      console.log(newState);
       return newState;
     default:
       return state;

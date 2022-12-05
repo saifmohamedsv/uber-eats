@@ -37,7 +37,7 @@ const foods = [
 ];
 
 const MenuItems = ({ name }) => {
-  return (
+   return (
     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <View>
         {foods.map((food) => (
