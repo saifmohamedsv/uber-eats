@@ -3,8 +3,10 @@ import { StyleSheet, Text, TouchableOpacity, View, Modal } from "react-native";
 import { withNavigation } from "react-navigation";
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
+import { db } from "../../firebase";
+import { serverTimestamp, collection, addDoc } from "firebase/firestore";
 
-const ViewCart = () => {
+const ViewCart = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { cartItems, restaurantName } = useSelector(
     (state) => state.cart.selectedItems
@@ -23,36 +25,16 @@ const ViewCart = () => {
           currency: "USD",
         });
 
-  const styles = StyleSheet.create({
-    modalContainer: {
-      flex: 1,
-      justifyContent: "flex-end",
-      backgroundColor: "rgba(0,0,0,0.6)",
-    },
-    modalCheckoutContainer: {
-      backgroundColor: "#fff",
-      padding: 16,
-      height: 500,
-      borderWidth: 1,
-    },
-    restaurantName: {
-      textAlign: "center",
-      fontWeight: "600",
-      fontSize: 18,
-      marginBottom: 10,
-    },
-    subTotalContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginTop: 15,
-    },
-    subTotalText: {
-      textAlign: "left",
-      fontWeight: "600",
-      marginBottom: 10,
-      fontSize: 15,
-    },
-  });
+  const handleOrder = async () => {
+    const coll = collection(db, "/orders");
+    await addDoc(coll, {
+      items: cartItems,
+      restaurantName,
+      createdAt: serverTimestamp(),
+    });
+    setModalVisible(false);
+    navigation.navigate("OrderCompleted");
+  };
 
   const modalCheckoutContent = () => {
     return (
@@ -69,7 +51,7 @@ const ViewCart = () => {
             </View>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <TouchableOpacity
-                onPress={() => setModalVisible(false)}
+                onPress={handleOrder}
                 style={{
                   backgroundColor: "#000",
                   borderRadius: 30,
@@ -152,4 +134,33 @@ const ViewCart = () => {
 
 export default withNavigation(ViewCart);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.6)",
+  },
+  modalCheckoutContainer: {
+    backgroundColor: "#fff",
+    padding: 16,
+    height: 500,
+    borderWidth: 1,
+  },
+  restaurantName: {
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  subTotalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 15,
+  },
+  subTotalText: {
+    textAlign: "left",
+    fontWeight: "600",
+    marginBottom: 10,
+    fontSize: 15,
+  },
+});

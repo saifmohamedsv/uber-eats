@@ -3,7 +3,7 @@ import React from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 
-const MenuItem = ({ food, name }) => {
+const MenuItem = ({ food, name, hideCheckBox, marginLeft }) => {
   const cartItems = useSelector((state) => state.cart.selectedItems.cartItems);
   const dispatch = useDispatch();
 
@@ -18,14 +18,19 @@ const MenuItem = ({ food, name }) => {
 
   return (
     <View style={styles.menuItem}>
-      <BouncyCheckbox
-        iconStyle={{ borderRadius: 0, borderColor: "gray" }}
-        isChecked={currentFood?.checkBoxValue}
-        fillColor="green"
-        onPress={(state) => {
-          selectItem(food, state);
-        }}
-      />
+      {!hideCheckBox ? (
+        <BouncyCheckbox
+          iconStyle={{ borderRadius: 0, borderColor: "gray" }}
+          isChecked={currentFood?.checkBoxValue}
+          fillColor="green"
+          onPress={(state) => {
+            selectItem(food, state);
+          }}
+        />
+      ) : (
+        ""
+      )}
+
       <FoodInfo {...food} />
       <FoodImage image={food.image} />
     </View>

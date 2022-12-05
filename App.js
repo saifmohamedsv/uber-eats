@@ -2,6 +2,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Home from "./screens/Home";
 import Restaurant from "./screens/Restaurant";
+import OrderCompleted from "./screens/OrderCompleted";
 import { Provider } from "react-redux";
 import configureStore from "./redux";
 
@@ -9,6 +10,7 @@ const Navigation = createStackNavigator(
   {
     Home,
     Restaurant,
+    OrderCompleted,
   },
   {
     initialRouteName: "Home",
