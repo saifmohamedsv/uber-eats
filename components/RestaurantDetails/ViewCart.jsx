@@ -5,9 +5,12 @@ import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
 import { db } from "../../firebase";
 import { serverTimestamp, collection, addDoc } from "firebase/firestore";
+import AnimatedLottieView from "lottie-react-native";
+import Loader from "../Loader";
 
 const ViewCart = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [loaderVisible, setLoaderVisible] = useState(false);
   const { cartItems, restaurantName } = useSelector(
     (state) => state.cart.selectedItems
   );
@@ -26,19 +29,24 @@ const ViewCart = ({ navigation }) => {
         });
 
   const handleOrder = async () => {
+    setLoaderVisible(true);
     const coll = collection(db, "/orders");
     await addDoc(coll, {
       items: cartItems,
       restaurantName,
       createdAt: serverTimestamp(),
     });
-    setModalVisible(false);
-    navigation.navigate("OrderCompleted");
+    setTimeout(() => {
+      setLoaderVisible(false);
+      setModalVisible(false);
+      navigation.navigate("OrderCompleted");
+    }, 2500);
   };
 
   const modalCheckoutContent = () => {
     return (
       <>
+        {loaderVisible ? <Loader /> : null}
         <View style={styles.modalContainer}>
           <View style={styles.modalCheckoutContainer}>
             <Text style={styles.restaurantName}>{restaurantName}</Text>

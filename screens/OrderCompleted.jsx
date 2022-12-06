@@ -8,6 +8,7 @@ import { query, orderBy, limit, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import Loader from "../components/Loader";
 
 const OrderCompleted = () => {
   const { restaurantName, cartItems } = useSelector(
@@ -68,13 +69,9 @@ const OrderCompleted = () => {
           <Text style={{ color: "green" }}>{totalPrice}</Text>...
         </Text>
 
-        <Text style={{ fontSize: 14, fontWeight: "500", color: "green" }}>
-          Your order items:
-        </Text>
-
         <ScrollView
-          style={{ width: "100%" }}
-          showsHorizontalScrollIndicator={false}
+          style={{ width: "100%", flex: 1 }}
+          showsVerticalScrollIndicator={false}
         >
           <MenuItems
             name={restaurantName}
@@ -84,7 +81,7 @@ const OrderCompleted = () => {
 
           <LottieView
             style={{
-              height: 250,
+              height: 160,
               alignSelf: "center",
               marginBottom: 20,
             }}
